@@ -119,12 +119,20 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val maxSide = max(max(a, b), c)
-    val minSide = min(min(a, b), c)
-    val medSide =
-            if ((a != maxSide && a != minSide)) a
-            else if ((b != maxSide && b != minSide)) b
-            else c
+    var maxSide = max(a,b)
+    var medSide = min(a,b)
+    var minSide = c
+    when {
+        (c > maxSide) -> {
+            minSide = medSide
+            medSide = maxSide
+            maxSide = c
+        }
+        else -> {
+            minSide = medSide
+            medSide = c
+        }
+    }
 
     return when {
         (maxSide > minSide + medSide) -> -1
@@ -133,6 +141,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         else -> 0
     }
 }
+
 
 /**
  * Средняя
