@@ -55,17 +55,7 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
 
     var maxSide = max(a,b)
     var medSide = min(a,b)
-    var minSide:Int
-    when {
-        (c > maxSide) -> {
-            minSide = medSide
-            medSide = maxSide
-        }
-        else -> {
-            minSide = medSide
-            medSide = c
-        }
-    }
+    var minSide = a + b + c - maxSide - medSide
 
     return ((minSide <= r) && (medSide <= s)) || ((medSide <= r) && (minSide <= s))
 }
