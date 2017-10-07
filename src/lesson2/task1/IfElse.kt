@@ -121,18 +121,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var maxSide = max(a,b)
     var medSide = min(a,b)
-    var minSide = c
-    when {
-        (c > maxSide) -> {
-            minSide = medSide
-            medSide = maxSide
-            maxSide = c
-        }
-        else -> {
-            minSide = medSide
-            medSide = c
-        }
-    }
+    var minSide = a + b + c - maxSide - medSide
 
     return when {
         (maxSide > minSide + medSide) -> -1
