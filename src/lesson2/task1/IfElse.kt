@@ -119,9 +119,9 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var maxSide = max(a,b)
-    var medSide = min(a,b)
-    var minSide = a + b + c - maxSide - medSide
+    var maxSide = max(a,max(b,c))
+    var minSide = min(a,min(b,c))
+    var medSide = a + b + c - maxSide - minSide
 
     return when {
         (maxSide > minSide + medSide) -> -1
@@ -130,6 +130,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         else -> 0
     }
 }
+
 
 
 /**
