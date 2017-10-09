@@ -53,10 +53,11 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
 
-    var maxSide = max(a,b)
-    var medSide = min(a,b)
-    var minSide = a + b + c - maxSide - medSide
+    var maxSide = max(a,max(b,c))
+    var minSide = min(a,min(b,c))
+    var medSide = a + b + c - maxSide - minSide
 
     return ((minSide <= r) && (medSide <= s)) || ((medSide <= r) && (minSide <= s))
 }
+
 
