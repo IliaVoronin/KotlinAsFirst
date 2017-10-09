@@ -2,7 +2,9 @@
 
 package lesson3.task1
 
+import javafx.beans.binding.Bindings.length
 import lesson1.task1.sqr
+import java.lang.Math.*
 
 /**
  * Пример
@@ -67,13 +69,11 @@ fun digitNumber(n: Int): Int {
     var c = 0
     var num = n
     if (num == 0) return 1
-    else {
-        while (num > 0) {
-            num = num / 10
-            c++
-        }
-        return c
+    while (num > 0) {
+        num = num / 10
+        c++
     }
+    return c
 }
 
 /**
@@ -86,14 +86,13 @@ fun fib(n: Int): Int {
     var res = 0
     var a = 1
     var b = 1
+    if (n <= 2) return 1
 
-    if (n > 2) {
-        for (i in 3..n) {
-            res = a + b
-            a = b
-            b = res
-        }
-    } else return 1
+    for (i in 3..n) {
+        res = a + b
+        a = b
+        b = res
+    }
 
     return res
 }
@@ -105,7 +104,7 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 
-fun lcm(m: Int, n: Int): Int {
+fun gcd(m: Int, n: Int): Int {
     var numM = m
     var numN = n
 
@@ -113,9 +112,10 @@ fun lcm(m: Int, n: Int): Int {
         if (numM < numN) numN -= numM
         else numM -= numN
     }
-
-    return (m * n) / numN
+    return numM
 }
+
+fun lcm(m: Int, n: Int): Int = m * n / gcd(m, n)
 
 /**
  * Простая
@@ -123,11 +123,10 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var k = n
     for (m in 2..n) {
-        if ((n % m == 0) && (m < k)) k = m
+        if (n % m == 0) return m
     }
-    return k
+    return n
 }
 
 /**
@@ -136,11 +135,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var k = 1
-    for (m in 1 until n) {
-        if ((n % m == 0) && (m > k)) k = m
+    for (m in n - 1 downTo 1) {
+        if (n % m == 0) return m
     }
-    return k
+    return 1
 }
 
 /**
@@ -150,17 +148,8 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var numM = m
-    var numN = n
 
-    while (numM != numN) {
-        if (numM < numN) numN -= numM
-        else numM -= numN
-    }
-
-    return numM == 1
-}
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
 
 /**
  * Простая
@@ -183,7 +172,25 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+
+fun sin(x: Double, eps: Double): Double {
+   /* var p = x
+    var s = p
+    var i = 3.0
+    var k = 1.0
+    
+    while (abs(p) > eps) {
+        p = pow(x, i) / factorial((i).toInt())
+        s += p * pow(-1.0, k)
+        k++
+        i += 2
+    }
+
+    return s */
+    return 0.0
+}
+
+//пока не сделал
 
 /**
  * Средняя
@@ -217,9 +224,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    return revert(n) == n
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -228,9 +233,9 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var num = n;
-    var c: Int
+    var num = n
     if (num < 10) return false
+    var c: Int
     while (num >= 10) {
         c = num % 10
         num /= 10
@@ -249,14 +254,13 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var s = ""
     var k = ""
-    for (i in 1..n) {
+    var i = 1
+    while (s.length <= n) {
         k = (i * i).toString()
         s += k
+        i++
     }
     return ((s[n - 1]).toInt() - 48)
-    /* тут проблемка с выводом, .toInt() преобразовывает String не в Integer число,
-       а в Integer код символа. Не нашел как нормально это исправить, пришлось по тупому
-     */
 }
 
 /**
@@ -269,10 +273,11 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var s = ""
     var k = ""
-    for (i in 1..n) {
+    var i = 1
+    while (s.length <= n) {
         k = fib(i).toString()
         s += k
+        i++
     }
     return ((s[n - 1]).toInt() - 48)
-    // аналогичная проблема как в заднии squareSequenceDigir()
 }
