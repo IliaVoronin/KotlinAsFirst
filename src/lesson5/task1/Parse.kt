@@ -64,9 +64,24 @@ fun main(args: Array<String>) {
  * Дата представлена строкой вида "15 июля 2016".
  * Перевести её в цифровой формат "15.07.2016".
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
- * При неверном формате входной строки вернуть пустую строку
- */
-fun dateStrToDigit(str: String): String = TODO()
+ * При неверном формате входной строки вернуть пустую стро*/
+
+val monthList = listOf("января", "февраля", "марта",
+                       "апреля", "мая", "июня",
+                       "июля", "августа", "сентября",
+                       "октября", "ноября", "декабря")
+
+fun dateStrToDigit(str: String): String {
+    
+    val parts = str.split(" ")
+    
+    if (parts.size != 3) return ""
+    if (parts[1] in monthList)
+        return String.format("%02d.%02d.%d", parts[0].toInt(), monthList.indexOf(parts[1]) + 1, parts[2].toInt())
+    else return ""
+    
+}
+
 
 /**
  * Средняя
