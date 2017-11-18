@@ -240,7 +240,6 @@ fun squareSequenceDigit(n: Int): Int { // решил переделать и н�
     var i = 1
     var l = 0 // условная длинна
     var num = 0
-    var ans: Int
 
     while (l < n) {
         num = i * i
@@ -267,7 +266,6 @@ fun fibSequenceDigit(n: Int): Int {
     var i = 1
     var l = 0
     var num = 0
-    var ans: Int
 
     while (l < n) {
         num = fib(i)
