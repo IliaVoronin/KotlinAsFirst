@@ -249,12 +249,10 @@ fun squareSequenceDigit(n: Int): Int { // решил переделать и н�
     }
     val k = (l - n)
 
-    if (k == 0) ans = num % 10
+    if (k == 0) return num % 10
     else {
-        ans = num / (10 * k) % 10
+        return num / pow(10.0, k.toDouble()).toInt() % 10
     }
-
-    return ans
 }
 
 /**
@@ -278,10 +276,8 @@ fun fibSequenceDigit(n: Int): Int {
     }
     val k = (l - n)
 
-    if (k == 0) ans = num % 10
+    if (k == 0) return num % 10
     else {
-        ans = num / (10 * k) % 10
+        return num / pow(10.0, k.toDouble()).toInt() % 10
     }
-
-    return ans
 }
