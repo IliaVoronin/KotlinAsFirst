@@ -196,15 +196,14 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    var list: MutableList<Int> = mutableListOf()
+    var list = mutableListOf<Int>()
     var numN = n
     var i = 2
 
     while (numN != 1) {
-        if ((numN % i) == 0) {
+        while ((numN % i) == 0) {
             list.add(i)
             numN /= i
-            i = 2
         }
         i++
     }
@@ -227,13 +226,14 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var list: MutableList<Int> = mutableListOf()
+    var list = mutableListOf<Int>()
     var numN = n
     while (numN >= base) {
-        list.add(0, (numN % base))
+        list.add(numN % base)
         numN /= base
     }
-    list.add(0, numN)
+    list.add(numN)
+    list.reverse()
     return list
 }
 
@@ -294,22 +294,22 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 
-val h1 = listOf("", " сто", " двести", " триста",
+val hundredsList = listOf("", " сто", " двести", " триста",
         " четыреста", " пятьсот", " шестьсот",
         " семьсот", " восемьсот", " девятьсот")
-val h2 = listOf("", " десять", " двадцать", " тридцать",
+val dozensList = listOf("", " десять", " двадцать", " тридцать",
         " сорок", " пятьдесят", " шестьдесят",
         " семьдесят", " восемьдесят", " девяносто")
-var h3 = listOf("", " одна", " две", " три",
+var forThousands = listOf("", " одна", " две", " три",
         " четыре", " пять", " шесть",
         " семь", " восемь", " девять")
-var h4 = listOf("", " один", " два", " три",
+var forHundreds = listOf("", " один", " два", " три",
         " четыре", " пять", " шесть",
         " семь", " восемь", " девять")
-val h5 = listOf(" десять", " одиннадцать", " двенадцать", " тринадцать",
+val teenList = listOf(" десять", " одиннадцать", " двенадцать", " тринадцать",
         " четырнадцать", " пятнадцать", " шестнадцать",
         " семнадцать", " восемнадцать", " девятнадцать")
-val h6 = listOf(" тысяча", " тысячи", " тысяч")
+val thousandsList = listOf(" тысяча", " тысячи", " тысяч")
 
 fun toNum(n: Int, flag: Int): String { //преобразовывает трехзначное число в набор слов
 
@@ -317,21 +317,21 @@ fun toNum(n: Int, flag: Int): String { //преобразовывает трех
 
     var res = ""
 
-    res += h1[n / 100 % 10] //100
+    res += hundredsList[n / 100 % 10] //100
 
     if ((n / 10 % 10) == 1) { //011
 
-        res += h5[n % 10]
+        res += teenList[n % 10]
 
     } else {
 
-        res += h2[n / 10 % 10] //010
+        res += dozensList[n / 10 % 10] //010
 
         if (flag == 0) { //001 с применением флажочка
 
-            res += h3[n % 10]
+            res += forThousands[n % 10]
 
-        } else res += h4[n % 10]
+        } else res += forHundreds[n % 10]
 
     }
 
@@ -350,9 +350,9 @@ fun russian(n: Int): String {
 
         when {
 
-            ((a % 10 == 1) && (a % 100 != 11)) -> res += h6[0] //тысяча
-            ((a % 10 in 2..4) && (a % 100 !in 12..14)) -> res += h6[1] // тысячи
-            ((a % 10 in 5..9) || (a % 100 in 11..19) || (a % 10 == 0)) -> res += h6[2] //тысяч
+            ((a % 10 == 1) && (a % 100 != 11)) -> res += thousandsList[0] //тысяча
+            ((a % 10 in 2..4) && (a % 100 !in 12..14)) -> res += thousandsList[1] // тысячи
+            ((a % 10 in 5..9) || (a % 100 in 11..19) || (a % 10 == 0)) -> res += thousandsList[2] //тысяч
 
         }
     }
