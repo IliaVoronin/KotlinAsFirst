@@ -4,6 +4,8 @@ package lesson3.task1
 
 import javafx.beans.binding.Bindings.length
 import lesson1.task1.sqr
+import lesson4.task1.convertToString
+import lesson8.task1.printDivisionProcess
 import java.lang.Math.*
 
 /**
@@ -161,7 +163,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     for (i in 0..n) {
-        if (sqr(i.toDouble()) in m..n) return true
+        if (i.toDouble() in sqrt(m.toDouble())..sqrt(n.toDouble())) return true
     }
     return false
 }
@@ -174,24 +176,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 
-fun sin(x: Double, eps: Double): Double {
-   /* var p = x
-    var s = p
-    var i = 3.0
-    var k = 1.0
-    
-    while (abs(p) > eps) {
-        p = pow(x, i) / factorial((i).toInt())
-        s += p * pow(-1.0, k)
-        k++
-        i += 2
-    }
-
-    return s */
-    return 0.0
-}
-
-//пока не сделал
+fun sin(x: Double, eps: Double): Double = TODO()
 
 /**
  * Средняя
@@ -237,7 +222,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     var num = n
     if (num < 10) return false
     while (num >= 10) {
-        var c = num % 10
+        val c = num % 10
         num /= 10
         if (num % 10 != c) return true
     }
@@ -251,16 +236,25 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int {
-    var s = ""
-    var k = ""
+fun squareSequenceDigit(n: Int): Int { // решил переделать и не делать через строки
     var i = 1
-    while (s.length <= n) {
-        k = (i * i).toString()
-        s += k
+    var l = 0 // условная длинна
+    var num = 0
+    var ans: Int
+
+    while (l < n) {
+        num = i * i
+        l += num.toString().length
         i++
     }
-    return ((s[n - 1]).toInt() - 48)
+    val k = (l - n)
+
+    if (k == 0) ans = num % 10
+    else {
+        ans = num / (10 * k) % 10
+    }
+
+    return ans
 }
 
 /**
@@ -270,14 +264,24 @@ fun squareSequenceDigit(n: Int): Int {
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
+
 fun fibSequenceDigit(n: Int): Int {
-    var s = ""
-    var k = ""
     var i = 1
-    while (s.length <= n) {
-        k = fib(i).toString()
-        s += k
+    var l = 0
+    var num = 0
+    var ans: Int
+
+    while (l < n) {
+        num = fib(i)
+        l += num.toString().length
         i++
     }
-    return ((s[n - 1]).toInt() - 48)
+    val k = (l - n)
+
+    if (k == 0) ans = num % 10
+    else {
+        ans = num / (10 * k) % 10
+    }
+
+    return ans
 }
