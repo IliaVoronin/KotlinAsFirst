@@ -147,7 +147,8 @@ fun bestLongJump(jumps: String): Int? {
                 numList.add(parts[i].toInt())
             }
         }
-        return numList.max()
+        if (numList.isEmpty()) return -1
+        else return numList.max()
     } catch (e: Exception) {
         return -1
     }
