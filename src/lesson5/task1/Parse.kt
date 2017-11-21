@@ -103,8 +103,8 @@ fun dateDigitToStr(digital: String): String {
         var year = parts[2].toInt()
 
         if (month != 0) {
-            val lel = monthList[month - 1]
-            return "$day $lel $year"
+            val monthString = monthList[month - 1]
+            return "$day $monthString $year"
         }
     } catch (e: NumberFormatException) {
         return ""
