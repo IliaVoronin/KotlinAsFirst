@@ -139,7 +139,7 @@ fun flattenPhoneNumber(phone: String): String = TODO()
 fun bestLongJump(jumps: String): Int? {
     try {
         var numList = mutableListOf<Int>()
-        val parts = jumps.split(" ")
+        val parts = jumps.split(" ").filter { it != "" }
         if (parts.isEmpty()) return 0
 
         for (i in 0 until parts.size) {
