@@ -140,7 +140,7 @@ fun bestLongJump(jumps: String): Int? {
     try {
         var numList = mutableListOf<Int>()
         val parts = jumps.split(" ").filter { it != "" }
-        if (parts.isEmpty()) return 0
+        if (parts.isEmpty()) return -1
 
         for (i in 0 until parts.size) {
             if ((parts[i] != "-") && (parts[i] != "%")) {
