@@ -163,7 +163,6 @@ fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean =
         Math.ceil(Math.sqrt(m.toDouble())) <= Math.floor(Math.sqrt(n.toDouble()))
-}
 /**
  * Средняя
  *
