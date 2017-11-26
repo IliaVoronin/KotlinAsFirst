@@ -180,7 +180,7 @@ class Line private constructor(val b: Double, val angle: Double) {
  */
 fun lineBySegment(s: Segment): Line {
     val angle = if (s.begin.x == s.end.x) PI / 2
-    else atan((s.end.y - s.begin.y) - (s.end.x - s.begin.x))
+    else atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
 
     return Line(s.begin, angle)
 }
