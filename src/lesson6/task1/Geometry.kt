@@ -4,6 +4,9 @@ package lesson6.task1
 
 import lesson1.task1.sqr
 import lesson2.task2.pointInsideCircle
+import java.lang.Math.PI
+import java.lang.Math.atan
+import kotlin.concurrent.fixedRateTimer
 
 /**
  * Точка на плоскости
@@ -175,21 +178,33 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    val angle = if (s.begin.x == s.end.x) PI / 2
+    else atan((s.end.y - s.begin.y) - (s.end.x - s.begin.x))
+
+    return Line(s.begin, angle)
+}
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 
 /**
  * Сложная
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val newAngle = lineByPoints(a, b).angle
+    val newCenter = Point((a.x + b.x) / 2, (a.y + b.y) / 2)
+
+    return if (newAngle >= PI / 2) Line(newCenter, newAngle - PI / 2)
+    else Line(newCenter, newAngle + PI / 2)
+}
 
 /**
  * Средняя
@@ -197,7 +212,24 @@ fun bisectorByPoints(a: Point, b: Point): Line = TODO()
  * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
  * Если в списке менее двух окружностей, бросить IllegalArgumentException
  */
-fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
+fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
+    val circlesList = circles.toList()
+    if (circlesList.size < 2) throw IllegalArgumentException()
+
+    var distance = circlesList[0].distance(circlesList[1])
+    var output = Pair(circlesList[0], circlesList[1])
+
+    for (i in 0..circlesList.size - 2) {
+        for (j in i + 1 until circlesList.size) {
+            val currentDistance = circlesList[i].distance(circlesList[j])
+            if (distance > currentDistance) {
+                distance = currentDistance
+                output = Pair(circlesList[i], circlesList[j])
+            }
+        }
+    }
+    return output
+}
 
 /**
  * Сложная
