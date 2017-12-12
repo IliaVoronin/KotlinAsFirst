@@ -82,8 +82,7 @@ data class Circle(val center: Point, val radius: Double) {
         val sumOfRad = radius + other.radius
         val distance = center.distance(other.center)
 
-        return if (distance < sumOfRad) 0.0
-        else distance - sumOfRad
+        return if (distance < sumOfRad) 0.0 else distance - sumOfRad
     }
 
     /**
@@ -118,7 +117,7 @@ fun diameter(vararg points: Point): Segment {
     var distance = 0.0
 
     for (i in 0..pointsList.size - 2) {
-        for (j in i until pointsList.size) {
+        for (j in i + 1 until pointsList.size) {
             val currentDistance = pointsList[i].distance(pointsList[j])
             if (distance < currentDistance) {
                 output = Segment(pointsList[i], pointsList[j])
