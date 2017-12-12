@@ -45,13 +45,10 @@ data class Square(val column: Int, val row: Int) {
  */
 fun square(notation: String): Square {
     val alpha = "abcdefgh"
-    try {
-        val a = alpha.indexOf(notation[0]) + 1
-        val b = notation[1].toInt() - 48
-        return Square(a, b)
-    } catch (e: Exception) {
-        throw IllegalArgumentException()
-    }
+    if (notation[1] !in '1'..'8' || notation[0] !in 'a'..'h' || notation.length != 2) throw IllegalArgumentException()
+    val a = alpha.indexOf(notation[0]) + 1
+    val b = notation[1].toInt() - 48
+    return Square(a, b)
 }
 
 /**
