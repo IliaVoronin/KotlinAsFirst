@@ -166,15 +166,11 @@ fun findDiagonalSquare(start: Square, end: Square): Square {
     val shift = abs(startSum - endSum) / 2
     return if (startSum > endSum) {
         var newSquare = Square(end.column + shift, end.row + shift)
-        if (!newSquare.inside()) {
-            newSquare = Square(start.column - shift, start.row - shift)
-        }
+        if (!newSquare.inside()) newSquare = Square(start.column - shift, start.row - shift)
         newSquare
     } else {
         var newSquare = Square(start.column + shift, start.row + shift)
-        if (!newSquare.inside()) {
-            newSquare = Square(end.column - shift, end.row - shift)
-        }
+        if (!newSquare.inside()) newSquare = Square(end.column - shift, end.row - shift)
         newSquare
     }
 }
