@@ -68,7 +68,7 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 
-fun assertInside(first:Square, second:Square) {
+fun assertInside(first: Square, second: Square) {
     if (!first.inside() || !second.inside()) throw IllegalArgumentException()
 }
 
@@ -128,7 +128,7 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  *
  */
-fun getColor(a: Square): Boolean = !((a.column % 2 == 0 && a.row % 2 != 0) || (a.column % 2 != 0 && a.row % 2 == 0))
+fun getColor(a: Square) = !((a.column % 2 == 0 && a.row % 2 != 0) || (a.column % 2 != 0 && a.row % 2 == 0))
 
 fun bishopMoveNumber(start: Square, end: Square): Int {
     assertInside(start, end)
@@ -159,24 +159,34 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun assureDiagonal(start: Square, end: Square): Boolean = abs(start.column - end.column) == abs(start.row - end.row)
+
+fun findDiagonalSquare(start: Square, end: Square): Square {
+    val startSum = start.column + start.row
+    val endSum = end.column + end.row
+    val shift = abs(startSum - endSum) / 2
+    return if (startSum > endSum) {
+        var newSquare = Square(end.column + shift, end.row + shift)
+        if (!newSquare.inside()) {
+            newSquare = Square(start.column - shift, start.row - shift)
+        }
+        newSquare
+    } else {
+        var newSquare = Square(start.column + shift, start.row + shift)
+        if (!newSquare.inside()) {
+            newSquare = Square(end.column - shift, end.row - shift)
+        }
+        newSquare
+    }
+}
 
 fun bishopTrajectory(start: Square, end: Square): List<Square> {
     assertInside(start, end)
-    when {
-        getColor(start) != getColor(end) -> return emptyList()
-        start == end -> return listOf(start)
-        abs(start.column - end.column) == abs(start.row - end.row) -> return listOf(start, end)
-        else -> {
-            for (i in 1..8) {
-                for (j in 1..8) {
-                    if (assureDiagonal(start, Square(i, j)) && assureDiagonal(end, Square(i, j)))
-                        return listOf(start, Square(i, j), end)
-                }
-            }
-        }
+    return when {
+        getColor(start) != getColor(end) -> emptyList()
+        start == end -> listOf(start)
+        abs(start.column - end.column) == abs(start.row - end.row) -> listOf(start, end)
+        else -> listOf(start, findDiagonalSquare(start, end), end)
     }
-    return emptyList()
 }
 
 /**

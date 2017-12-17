@@ -50,41 +50,35 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> {
  * Реализация интерфейса "матрица"
  */
 class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : Matrix<E> {
-    private val newList = mutableListOf<E>()
+    private val list = mutableListOf<E>()
 
     init {
-        for (i in 0 until width * height) {
-            newList.add(e)
-        }
+        for (i in 0 until width * height) list.add(e)
     }
 
-
-    override fun get(row: Int, column: Int): E = newList[column + width * row]
+    override fun get(row: Int, column: Int): E = list[column + width * row]
 
     override fun get(cell: Cell): E = get(cell.row, cell.column)
 
     override fun set(row: Int, column: Int, value: E) {
-        newList[width * row + column] = value
+        list[width * row + column] = value
     }
 
     override fun set(cell: Cell, value: E) = set(cell.row, cell.column, value)
 
 
-    override fun equals(other: Any?) = other is MatrixImpl<*> && height == other.height && width == other.width && newList == other.newList
+    override fun equals(other: Any?) =
+            other is MatrixImpl<*> && height == other.height && width == other.width && list == other.list
 
 
     override fun toString(): String {
-
         val newStingBuilder = StringBuilder()
         newStingBuilder.append("[ \n")
-
         for (r in 0 until height) {
             newStingBuilder.append("[ ")
             for (c in 0 until width) {
-                var t = " "
-                if (c == width - 1) t = "\t"
                 val element = this[r, c]
-                newStingBuilder.append("$element $t")
+                newStingBuilder.append("$element ")
             }
             newStingBuilder.append("]")
             newStingBuilder.append("\n")
@@ -96,7 +90,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
     override fun hashCode(): Int {
         var res = height
         res = 31 * res + width
-        res = 31 * res + newList.hashCode()
+        res = 31 * res + list.hashCode()
         return res
     }
 }

@@ -104,15 +104,11 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  */
 
 fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
-
     if (matrix.height != matrix.width) throw IllegalArgumentException()
     val newMatrix = createMatrix(matrix.height, matrix.width, matrix[0, 0])
-
-    for (i in 0 until matrix.width) {
-        for (j in 0 until matrix.height) {
+    for (i in 0 until matrix.width)
+        for (j in 0 until matrix.height)
             newMatrix[i, j] = matrix[matrix.width - 1 - j, i]
-        }
-    }
     return newMatrix
 }
 
@@ -131,23 +127,15 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
  */
 
 fun isLatinSquare(matrix: Matrix<Int>): Boolean {
-
     if (matrix.height != matrix.width) return false
-
     for (i in 0 until matrix.width) {
-
         var columnList = listOf<Int>()
         var rowList = listOf<Int>()
-
         for (j in 0 until matrix.width) {
             columnList += matrix[j, i]
             rowList += matrix[i, j]
         }
-
-        for (value in 1..matrix.width) {
-            if (value !in rowList || value !in columnList) return false
-        }
-
+        for (value in 1..matrix.width) if (value !in rowList || value !in columnList) return false
     }
     return true
 }
@@ -190,27 +178,16 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
 fun findHoles(matrix: Matrix<Int>): Holes {
     var columns = listOf<Int>()
     var rows = listOf<Int>()
-
     for (i in 0 until matrix.width) {
-
         var count = 0
-        for (j in 0 until matrix.height) {
-            if (matrix[j, i] == 1) count++
-        }
+        for (j in 0 until matrix.height) if (matrix[j, i] == 1) count++
         if (count == 0) columns += i
-
     }
-
     for (i in 0 until matrix.height) {
-
         var count = 0
-        for (j in 0 until matrix.width) {
-            if (matrix[i, j] == 1) count++
-        }
+        for (j in 0 until matrix.width) if (matrix[i, j] == 1) count++
         if (count == 0) rows += i
-
     }
-
     return Holes(rows, columns)
 }
 
@@ -234,19 +211,12 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
  * К примеру, центральный элемент 12 = 1 + 2 + 4 + 5, элемент в левом нижнем углу 12 = 1 + 4 + 7 и так далее.
  */
 fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
-
     val submatrixSum = createMatrix(matrix.height, matrix.width, 0)
-
-    for (i in 0 until matrix.height) {
-        for (j in 0 until matrix.width) {
-            for (n in 0..i) {
-                for (m in 0..j) {
+    for (i in 0 until matrix.height)
+        for (j in 0 until matrix.width)
+            for (n in 0..i)
+                for (m in 0..j)
                     submatrixSum[i, j] += matrix[n, m]
-                }
-            }
-        }
-    }
-
     return submatrixSum
 }
 
@@ -280,15 +250,10 @@ fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> 
  */
 
 operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
-
     val newMatrix = createMatrix(this.height, this.width, 0)
-
-    for (i in 0 until this.height) {
-        for (j in 0 until this.width) {
+    for (i in 0 until this.height)
+        for (j in 0 until this.width)
             newMatrix[i, j] = -1 * this[i, j]
-        }
-    }
-
     return newMatrix
 }
 
@@ -302,18 +267,12 @@ operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
  */
 
 operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
-
     if (this.width != other.height) throw IllegalArgumentException()
     val newMatrix = createMatrix(this.height, other.width, 0)
-
-    for (i in 0 until this.height) {
-        for (j in 0 until other.width) {
-            for (n in 0 until other.height) {
+    for (i in 0 until this.height)
+        for (j in 0 until other.width)
+            for (n in 0 until other.height)
                 newMatrix[i, j] += this[i, n] * other[n, j]
-            }
-        }
-    }
-
     return newMatrix
 }
 
