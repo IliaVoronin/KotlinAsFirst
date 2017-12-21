@@ -239,7 +239,21 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val pointA = b.x - a.x
+    val pointB = b.y - a.y
+    val pointC = c.x - a.x
+    val pointD = c.y - a.y
+    val pointE = pointA * (a.x + b.x) + pointB * (a.y + b.y)
+    val pointF = pointC * (a.x + c.x) + pointD * (a.y + c.y)
+    val pointG = 2 * (pointA * (c.y - b.y) - pointB * (c.x - b.x))
+
+    val centerX = (pointD * pointE - pointB * pointF) / pointG
+    val centerY = (pointA * pointF - pointC * pointE) / pointG
+    val centerPoint = Point(centerX, centerY)
+
+    return Circle(centerPoint, centerPoint.distance(a))
+}
 
 /**
  * Очень сложная
@@ -252,5 +266,18 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Circle = TODO()
+fun minContainingCircle(vararg points: Point): Circle {
+    if (points.size == 0) throw IllegalArgumentException()
+    if (points.size == 1) return Circle(points[0], 0.0)
+    return circleByThreePoints(diameter(*points).begin, diameter(*points).end, getPoint(*points))
+}
+
+fun getPoint(vararg points: Point): Point {
+    val newCircle = circleByDiameter(diameter(*points))
+    var outputPoint = newCircle.center
+    for (point in points)
+        if (!newCircle.contains(point) && newCircle.center.distance(point) > newCircle.center.distance(outputPoint))
+            outputPoint = point
+    return outputPoint
+}
 
