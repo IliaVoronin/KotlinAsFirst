@@ -273,15 +273,23 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
 fun minContainingCircle(vararg points: Point): Circle {
     if (points.size == 0) throw IllegalArgumentException()
     if (points.size == 1) return Circle(points[0], 0.0)
+    if (points.size == 2) return circleByDiameter(diameter(*points))
     return circleByThreePoints(diameter(*points).begin, diameter(*points).end, getPoint(*points))
 }
 
 fun getPoint(vararg points: Point): Point {
     val newCircle = circleByDiameter(diameter(*points))
     var outputPoint = newCircle.center
-    for (point in points)
-        if (!newCircle.contains(point) && newCircle.center.distance(point) > newCircle.center.distance(outputPoint))
+    var count = 0
+
+    for (point in points) {
+        if (newCircle.center.distance(point) > newCircle.center.distance(outputPoint) && !newCircle.contains(point)) {
             outputPoint = point
-    return outputPoint
+            count++
+        }
+    }
+    return if (count == 0) {
+        diameter(*points).begin
+    } else outputPoint
 }
 
