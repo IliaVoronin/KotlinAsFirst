@@ -4,8 +4,7 @@ package lesson6.task1
 
 import lesson1.task1.sqr
 import lesson2.task2.pointInsideCircle
-import java.lang.Math.PI
-import java.lang.Math.atan
+import java.lang.Math.*
 import kotlin.concurrent.fixedRateTimer
 
 /**
@@ -271,25 +270,36 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * соединяющий две самые удалённые точки в данном множестве.
  */
 fun minContainingCircle(vararg points: Point): Circle {
-    if (points.size == 0) throw IllegalArgumentException()
+    if (points.isEmpty()) throw IllegalArgumentException()
     if (points.size == 1) return Circle(points[0], 0.0)
     if (points.size == 2) return circleByDiameter(diameter(*points))
-    return circleByThreePoints(diameter(*points).begin, diameter(*points).end, getPoint(*points))
-}
-
-fun getPoint(vararg points: Point): Point {
-    val newCircle = circleByDiameter(diameter(*points))
-    var outputPoint = newCircle.center
-    var count = 0
-
-    for (point in points) {
-        if (newCircle.center.distance(point) > newCircle.center.distance(outputPoint) && !newCircle.contains(point)) {
-            outputPoint = point
-            count++
+    var smallCircle = circleByDiameter(diameter(*points))
+    println(smallCircle)
+    val listM = mutableListOf<Point>()
+    for (point in points)
+        if (smallCircle.contains(point)) listM.add(point)
+    for (a in 0 until listM.size) {
+        for (b in 0 until listM.size) {
+            val newCircle = Circle(circleByDiameter(diameter(listM[a], listM[b])).center, listM[a].distance(listM[b]) / 2)
+            if (circleContainsList(newCircle, listM) && newCircle.radius < smallCircle.radius)
+                smallCircle = newCircle
         }
     }
-    return if (count == 0) {
-        diameter(*points).begin
-    } else outputPoint
+    for (a in 0 until listM.size) {
+        for (b in 0 until listM.size) {
+            for (c in 0 until listM.size) {
+                val newCircle = circleByThreePoints(listM[a],listM[b],listM[c])
+                if (circleContainsList(newCircle, listM) && newCircle.radius < smallCircle.radius)
+                    smallCircle = newCircle
+            }
+        }
+    }
+    return smallCircle
 }
 
+fun circleContainsList(circle: Circle, list: List<Point>): Boolean {
+    for (i in 0 until list.size) {
+        if (!circle.contains(list[i])) return false
+    }
+    return true
+}
